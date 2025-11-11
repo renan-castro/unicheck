@@ -13,12 +13,13 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")       // Todas as rotas
-                        .allowedOrigins("*") // Origem do front-end
+                        .allowedOriginPatterns("*") // Origem do front-end
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowCredentials(false);
+                        .allowCredentials(true);
             }
         };
     }
 }
+
 
 
