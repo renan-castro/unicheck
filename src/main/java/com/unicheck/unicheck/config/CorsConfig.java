@@ -13,10 +13,11 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")       // Todas as rotas
-                        .allowedOrigins("http://localhost:5173") // Origem do front-end
+                        .allowedOrigins("*") // Origem do front-end
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowCredentials(true);
             }
         };
     }
 }
+
