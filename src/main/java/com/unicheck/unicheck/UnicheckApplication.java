@@ -1,6 +1,5 @@
 package com.unicheck.unicheck;
 
-import me.paulschwarz.springdotenv.spring.DotenvApplicationInitializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
