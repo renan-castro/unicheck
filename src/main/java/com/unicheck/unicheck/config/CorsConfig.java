@@ -15,11 +15,12 @@ public class CorsConfig {
                 registry.addMapping("/**")       // Todas as rotas
                         .allowedOriginPatterns("*") // Origem do front-end
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowCredentials(false);
+                        .allowCredentials(true);
             }
         };
     }
 }
+
 
 
 
