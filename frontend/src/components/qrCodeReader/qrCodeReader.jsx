@@ -33,9 +33,11 @@ export default function QrCodeReader(props) {
       const code = jsQR(imageData.data, canvas.width, canvas.height);
 
       if (code){
-        console.log("QR Code detectado:", code.data);
-
         if (sendedRef.current) return;
+
+        sendedRef.current = true;
+
+        console.log("QR Code detectado:", code.data);
 
         let dataReceived = JSON.parse(code.data);
 
@@ -45,10 +47,6 @@ export default function QrCodeReader(props) {
         }
 
         const dataToSend = Object.assign({}, dataPrepare, dataReceived);
-0
-        let sended = false;
-        
-        if(sended) return;
 
         const response = await fetch('https://unicheck.onrender.com/api/attendances/register',{
           method: 'POST',
@@ -60,8 +58,6 @@ export default function QrCodeReader(props) {
           if(!res.ok){
             throw new Error('Erro no envio, verifique se o QR Code é válido.');
           }
-
-          sendedRef.current = true;
           
           return res.json();
         })
