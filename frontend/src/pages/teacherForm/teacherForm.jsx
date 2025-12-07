@@ -8,16 +8,43 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 export default function teacherForm() {
-  const [classId, setClassId] = useState("");
+  // Recuperar dados do localStorage ao iniciar
+  const getSavedData = (key, defaultValue) => {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : defaultValue;
+  };
+
+  const [classId, setClassId] = useState(() => getSavedData("unicheck_classId", ""));
   const [timestamp, setTimestamp] = useState(Date.now());
-  const [showQrCode, setShowQrCode] = useState(false);
-  const [subject, setSubject] = useState("");
-  const [attendances, setAtendances] = useState([]);
-  const [qrValue, setQrValue] = useState("");
+  const [showQrCode, setShowQrCode] = useState(() => getSavedData("unicheck_showQrCode", false));
+  const [subject, setSubject] = useState(() => getSavedData("unicheck_subject", ""));
+  const [attendances, setAtendances] = useState(() => getSavedData("unicheck_attendances", []));
+  const [qrValue, setQrValue] = useState(() => getSavedData("unicheck_qrValue", ""));
 
   const location = useLocation();
   const navigate = useNavigate();
   const { name } = location.state || {};
+
+  // Salvar dados no localStorage quando mudarem
+  useEffect(() => {
+    localStorage.setItem("unicheck_classId", JSON.stringify(classId));
+  }, [classId]);
+
+  useEffect(() => {
+    localStorage.setItem("unicheck_showQrCode", JSON.stringify(showQrCode));
+  }, [showQrCode]);
+
+  useEffect(() => {
+    localStorage.setItem("unicheck_subject", JSON.stringify(subject));
+  }, [subject]);
+
+  useEffect(() => {
+    localStorage.setItem("unicheck_attendances", JSON.stringify(attendances));
+  }, [attendances]);
+
+  useEffect(() => {
+    localStorage.setItem("unicheck_qrValue", JSON.stringify(qrValue));
+  }, [qrValue]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -95,6 +122,23 @@ export default function teacherForm() {
         method: "POST",
       }
     );
+
+    // Limpar cache após encerrar a aula
+    clearCache();
+  }
+
+  function clearCache() {
+    localStorage.removeItem("unicheck_classId");
+    localStorage.removeItem("unicheck_showQrCode");
+    localStorage.removeItem("unicheck_subject");
+    localStorage.removeItem("unicheck_attendances");
+    localStorage.removeItem("unicheck_qrValue");
+    
+    setClassId("");
+    setShowQrCode(false);
+    setSubject("");
+    setAtendances([]);
+    setQrValue("");
   }
 
   function copyTableToClipboard() {
@@ -143,8 +187,10 @@ export default function teacherForm() {
           <input
             type="text"
             id="subject"
+            value={subject}
             onChange={(e) => setSubject(e.target.value)}
             placeholder="Digite o nome da disciplina"
+            disabled={showQrCode}
           />
         </div>
 
