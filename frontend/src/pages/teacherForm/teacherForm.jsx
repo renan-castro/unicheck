@@ -4,7 +4,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import ResponsiveLogo from "../../components/responsiveLogo/responsiveLogo.jsx";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 export default function teacherForm() {
@@ -16,6 +16,7 @@ export default function teacherForm() {
   const [qrValue, setQrValue] = useState("");
 
   const location = useLocation();
+  const navigate = useNavigate();
   const { name } = location.state || {};
 
   useEffect(() => {
@@ -96,12 +97,40 @@ export default function teacherForm() {
     );
   }
 
+  function copyTableToClipboard() {
+    if (attendances.length === 0) {
+      alert("Não há dados para copiar.");
+      return;
+    }
+
+    const header = ["Nome", "Cadeira", "Localização", "Data e Hora"].join("\t");
+    const rows = attendances.map((p) =>
+      [
+        p.name,
+        p.subject,
+        p.localization,
+        new Date(p.dateTime).toLocaleString(),
+      ].join("\t")
+    );
+
+    const tableText = [header, ...rows].join("\n");
+
+    navigator.clipboard.writeText(tableText).then(
+      () => {
+        alert("Tabela copiada! Cole no Excel ou Google Sheets.");
+      },
+      () => {
+        alert("Erro ao copiar a tabela.");
+      }
+    );
+  }
+
   return (
     <div className="content">
       <h1> UniCheck </h1>
       <form className="teacher-form">
         <div className="formHeader">
-          <button className="homeButton"> Voltar </button>
+          <button type="button" className="homeButton" onClick={() => navigate("/")}> Voltar </button>
         </div>
         <h2>Olá, { name } !</h2>
         <p>
@@ -133,6 +162,18 @@ export default function teacherForm() {
             Iniciar aula
           </button>
           {showQrCode && <button className="closeClass" onClick={(event) => endClass(event)}>Encerrar aula</button>}
+        </div>
+
+        <div className="tableHeader">
+          <h3>Lista de Presenças</h3>
+          <button
+            className="copyButton"
+            onClick={copyTableToClipboard}
+            disabled={attendances.length === 0}
+            title="Copiar para planilha"
+          >
+            📋 Copiar tabela
+          </button>
         </div>
 
         <table>

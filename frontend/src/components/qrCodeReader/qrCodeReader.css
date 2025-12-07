@@ -55,3 +55,67 @@
   border-radius: 0.5rem;
   max-width: 16rem;
 }
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+  .qr-reader-container {
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .qr-reader-title {
+    font-size: 1.25rem;
+  }
+
+  .qr-reader-camera {
+    width: 14rem;
+    height: 14rem;
+  }
+
+  .qr-reader-result {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .qr-reader-container {
+    padding: 0.75rem;
+  }
+
+  .qr-reader-title {
+    font-size: 1.1rem;
+  }
+
+  .qr-reader-camera {
+    width: 12rem;
+    height: 12rem;
+  }
+
+  .qr-reader-result {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+.location-status {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.location-status.success {
+  color: #166534;
+  background-color: #dcfce7;
+}
+
+.location-status.error {
+  color: #991b1b;
+  background-color: #fee2e2;
+}
+
+.location-status.loading {
+  color: #1e40af;
+  background-color: #dbeafe;
+}

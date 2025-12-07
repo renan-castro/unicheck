@@ -5,15 +5,36 @@ import "./qrCodeReader.css";
 
 export default function QrCodeReader(props) {
   const webcamRef = useRef(null);
+  const [location, setLocation] = useState(null);
+  const [locationError, setLocationError] = useState(null);
   
   const name = props.name;
+
+  useEffect(() => {
+    // Obter localização ao carregar o componente
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+        },
+        (error) => {
+          console.error("Erro ao obter localização:", error.message);
+          setLocationError(error.message);
+        },
+        { enableHighAccuracy: true }
+      );
+    } else {
+      setLocationError("Geolocalização não suportada");
+    }
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
       scanQRCode();
     }, 500);
     return () => clearInterval(interval);
-  }, []);
+  }, [location]);
 
   const sendedRef = useRef(false);
 
@@ -41,9 +62,15 @@ export default function QrCodeReader(props) {
 
         let dataReceived = JSON.parse(code.data);
 
+        // Formatar localização
+        let localizationString = "Localização não disponível";
+        if (location) {
+          localizationString = `${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}`;
+        }
+
         let dataPrepare = {
           name: name,
-          localization: 'Faculdade'
+          localization: localizationString
         }
 
         const dataToSend = Object.assign({}, dataPrepare, dataReceived);
@@ -90,7 +117,13 @@ export default function QrCodeReader(props) {
       </div>
 
       <p className="qr-reader-result">
-        
+        {location ? (
+          <span className="location-status success">📍 Localização obtida</span>
+        ) : locationError ? (
+          <span className="location-status error">⚠️ {locationError}</span>
+        ) : (
+          <span className="location-status loading">🔄 Obtendo localização...</span>
+        )}
       </p>
     </div>
   );

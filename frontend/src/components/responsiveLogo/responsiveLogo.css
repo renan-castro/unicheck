@@ -9,3 +9,18 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+  .logo {
+    width: 15rem;
+    height: 4rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .logo {
+    width: 12rem;
+    height: 3rem;
+  }
+}

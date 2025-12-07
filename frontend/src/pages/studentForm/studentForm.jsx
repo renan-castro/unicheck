@@ -2,10 +2,11 @@ import { React, useEffect, useState } from "react";
 import "./studentForm.css";
 import ResponsiveLogo from "../../components/responsiveLogo/responsiveLogo.jsx";
 import QrCodeReader from "../../components/qrCodeReader/qrCodeReader.jsx";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function studentForm() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { name } = location.state || {};
 
   const [latitude, setLatitude] = useState(null);
@@ -42,7 +43,7 @@ export default function studentForm() {
       <h1> UniCheck </h1>
       <form className="teacher-form">
         <div className="formHeader">
-          <button className="homeButton" onClick={(event) => getPos(event)}> Voltar </button>
+          <button type="button" className="homeButton" onClick={() => navigate("/")}> Voltar </button>
         </div>
         <h2>Olá, {name}!</h2>
         <p>
