@@ -243,7 +243,7 @@ export default function teacherForm() {
                 <tr key={i}>
                   <td>{p.name}</td>
                   <td>{p.subject}</td>
-                  <td><a href={p.localization}> 🗺️ Acesse no Maps</a></td>
+                  <td><a href={p.localization} target="_blank"> 🗺️ Acesse no Maps</a></td>
                   <td>{new Date(p.dateTime).toLocaleString()}</td>
                 </tr>
               ))
