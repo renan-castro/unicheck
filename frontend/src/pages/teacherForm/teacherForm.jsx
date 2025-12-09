@@ -14,6 +14,19 @@ export default function teacherForm() {
     return saved ? JSON.parse(saved) : defaultValue;
   };
 
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString('pt-BR', {
+      timeZone: 'America/Sao_Paulo',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  };
+
   const [classId, setClassId] = useState(() => getSavedData("unicheck_classId", ""));
   const [timestamp, setTimestamp] = useState(Date.now());
   const [showQrCode, setShowQrCode] = useState(() => getSavedData("unicheck_showQrCode", false));
@@ -153,7 +166,7 @@ export default function teacherForm() {
         p.name,
         p.subject,
         p.localization,
-        new Date(p.dateTime).toLocaleString(),
+        formatDateTime(p.dateTime),
       ].join("\t")
     );
 
@@ -244,7 +257,7 @@ export default function teacherForm() {
                   <td>{p.name}</td>
                   <td>{p.subject}</td>
                   <td><a href={p.localization} target="_blank"> 🗺️ Acesse no Maps</a></td>
-                  <td>{new Date(p.dateTime).toLocaleString()}</td>
+                  <td>{formatDateTime(p.dateTime)}</td>
                 </tr>
               ))
             )}
