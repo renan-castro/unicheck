@@ -65,7 +65,8 @@ export default function QrCodeReader(props) {
         // Formatar localização
         let localizationString = "Localização não disponível";
         if (location) {
-          localizationString = `${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}`;
+          // localizationString = `${location.latitude.toFixed(6)}, ${location.longitude.toFixed(6)}`;
+          localizationString = 'www.google.com/maps?q='+ location.latitude + ',' + location.longitude;
         }
 
         let dataPrepare = {
