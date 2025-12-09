@@ -15,9 +15,15 @@ export default function teacherForm() {
   };
 
   const formatDateTime = (dateString) => {
+    // Se a data vier sem timezone (ex: "2025-12-09T15:30:00"), 
+    // o navegador assume local. Se vier com Z no final, é UTC.
+    // Vamos subtrair 3 horas se a data estiver vindo com offset errado
     const date = new Date(dateString);
-    return date.toLocaleString('pt-BR', {
-      timeZone: 'America/Sao_Paulo',
+    
+    // Subtrai 3 horas (em milissegundos) para ajustar de UTC para Brasília
+    const adjustedDate = new Date(date.getTime() - (3 * 60 * 60 * 1000));
+    
+    return adjustedDate.toLocaleString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
